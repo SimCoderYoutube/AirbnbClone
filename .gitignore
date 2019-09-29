@@ -19,3 +19,5 @@ $RECYCLE.BIN/
 .DS_Store
 .Spotlight-V100
 .Trashes
+
+server/config/
