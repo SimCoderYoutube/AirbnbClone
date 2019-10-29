@@ -4,22 +4,31 @@ import StyledFirebaseUi from 'react-firebaseui/StyledFirebaseAuth'
 import 'whatwg-fetch';
 import axios from 'axios'
 
-firebase.initializeApp({
-  apiKey: ' AIzaSyC4fMBbsszojJoJ-JCvZenhGE35WJqtXMA',
-  authDomain: 'airbnb-850aa.firebaseapp.com'
-})
+const firebaseConfig = {
+  apiKey: "AIzaSyDAioB8pnLluiIHXHhos-JdHftypH6UYKI",
+  authDomain: "airbnbclone-88e95.firebaseapp.com",
+  databaseURL: "https://airbnbclone-88e95.firebaseio.com",
+  projectId: "airbnbclone-88e95",
+  storageBucket: "airbnbclone-88e95.appspot.com",
+  messagingSenderId: "273254247195",
+  appId: "1:273254247195:web:26f1bfe40c110607b6c1be",
+  measurementId: "G-WEWECNQ9EB"
+};
+
+firebase.initializeApp(firebaseConfig)
+
 var uiConfig = {
   callbacks: {
     //After user signs in this function is called
     signInSuccessWithAuthResult: function (authResult, redirectUrl) {
-      axios.post('/api/auth/verifyUser', null, { params: { user: firebase.auth().currentUser } })
+      axios.post('/api/user/check', null, { params: { user: firebase.auth().currentUser } })
         .then(res => {
           console.log(res)
         })
       return true;
     }
   },
-  signInFlow: 'redirect',
+  signInFlow: 'popup',
   signInSuccessUrl: '/',
   signInOptions: [
     firebase.auth.GoogleAuthProvider.PROVIDER_ID
