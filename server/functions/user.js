@@ -19,10 +19,11 @@ module.exports = {
       admin.auth().verifyIdToken(userJson.stsTokenManager.accessToken)
         .then(function (decodedToken) {
           userModel.findOne({ googleId: userJson.uid }).then(function (user) {
-          console.log("verifyAccount")
 
+            //Check if user exists
             if (!user) {
               
+            //Create user and save it to the databse
               new userModel({
                 name: userJson.displayName,
                 picture: userJson.photoURL,
@@ -37,7 +38,6 @@ module.exports = {
                 })
               })
             } else {
-              console.log("verifyAccount")
               resolve({
                 code: 200,
                 success: true,
