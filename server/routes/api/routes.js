@@ -13,15 +13,25 @@ module.exports = (app) => {
         });
     });
 
+
+    /**
+     * Endpoint responsible for calling the createPost function
+     * and sending back the response from it
+     * 
+     * @param user - user object
+     * @param title - title of the post
+     * @param description - description of the post
+     * @param location - location of the post
+     * @param numberOfPeople - numberOfPeople of the post
+     * @param pricePerNight - pricePerNight of the post
+     */
     app.post('/api/post/create', (req, res, next) => {
         const { user, title, description, location, numberOfPeople, pricePerNight } = req.query;
         postFunc.createPost(user, title, description, location, numberOfPeople, pricePerNight)
             .then(result => {
-                console.log(result)
                 res.json(result);
             })
             .catch(error => {
-                console.log(error)
                 res.json(error);
             })
     });

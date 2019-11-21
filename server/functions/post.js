@@ -4,11 +4,14 @@ const userFunc = require('./user');
 
 module.exports = {
     createPost:(user, title, description, location, numberOfPeople, pricePerNight) => new Promise((resolve,reject) => {
-        userFunc.verifyAccount(user)
+        userFunc.verifyAccount(user)//Verify if user is correctly logged in
         .then(result => {
+
+            //Create and save post object
             const mPost = new postModel({title, description, location, numberOfPeople, pricePerNight});
             mPost.save();
 
+            //find user by the id of the result and push the post the posts entry in the user document
             userModel.findOneAndUpdate({ _id: result.user._id }, { $push: { posts: [mPost] }}, { new: true, useFindAndModify: false})
             .then(result => {
                 resolve({
