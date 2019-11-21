@@ -11,9 +11,15 @@ const userModel = require('../models/user');
 module.exports = {
   verifyAccount: function (user) {
     return new Promise(function (resolve, reject) {
+      if(user === undefined){
+        return reject({
+          code: 401,
+          success: false,
+          message: "auth denied"
+        });
+      }
       //Place the user info that reached this point in a string into an object
       userJson = JSON.parse(user);
-      console.log(user)
 
       //Check if the user token is valid, this will confirm the user is correctly logged in
       admin.auth().verifyIdToken(userJson.stsTokenManager.accessToken)
@@ -47,7 +53,6 @@ module.exports = {
             }
           })
         }).catch(function (error) {
-          console.log(error)
           reject({
             code: 401,
             success: false,

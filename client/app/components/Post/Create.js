@@ -28,7 +28,7 @@ class Create extends Component {
         });
     }
     handleSubmit(){
-        axios.post('', null,
+        axios.post('/api/post/create', null,
         {
             params:{
                 user: firebase.auth().currentUser,
