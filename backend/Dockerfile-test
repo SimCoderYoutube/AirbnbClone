@@ -1,0 +1,27 @@
+FROM node:8
+# set working directory
+WORKDIR /app
+
+
+
+# install and cache app dependencies
+COPY package*.json ./
+
+RUN npm install
+
+COPY ./src ./src
+COPY ./__tests__ ./__tests__
+COPY .env* ./
+
+COPY .eslintignore/ ./
+COPY .eslintrc.js/ ./
+COPY .jshintignore/ ./
+COPY stryker.conf.js/ ./
+COPY jest.config.js .
+COPY setupTests.js .
+
+
+EXPOSE 6200
+
+# start app
+CMD ["npm", "run", "test-docker"]

@@ -11,43 +11,29 @@ These instructions will get you a copy of the project up and running on your loc
 
 What things you need to install the software and how to install them
 
-1.  Node.js 6+
-2. MongoDb
+1. Docker-Compose
 
-```
-npm install
-```
 
-### Installing
+> check the following [link](https://docs.docker.com/compose/install/) on how to install docker-compose
+
+## Setting up firebase
+
+1. Go to your firebase dashboard -> authentication -> sign-in method and enable google
+   
+2. Go to firebase dashboard -> project Settings -> add web app and get the contents of firebaseConfig pasting them onto the variable firebaseConfig in frontend/src/Login/Login.js
+
+3.  Go to your firebase dashboard -> Project Settings -> Service accounts
+    1.  Generate new private key copy the content and paste it into backend/src/config/serviceAccountKey.json
+    2.  Go to backend/src/functions/user.js and change the admin.initializeApp() content for the one in the service account page.
+
+## Deployment
 
 A step by step series of examples that tell you how to get a development env running.
 
 ```
-mongod
-
-/** Open new terminal **/
-
-npm install
-npm run start:dev
-
+> sudo systemctl start docker (or the equivalemnt for your OS)
+> sudo docker-compose up --build
 ```
-
-## Deployment
-
-You'll need to change the urls at he config/config.js to fit with your domain and change the password and username.
-
-After that in your server simply run 
-```
-mongod
-
-/** Open new terminal **/
-
-npm install
-npm run start
-```
-
-Check this [Tutorial](https://medium.com/@Keithweaver_/setting-up-mern-stack-on-aws-ec2-6dc599be4737)
- if you have doubts on how to use nginx and pm2
 
 ## Authors
 

@@ -1,0 +1,64 @@
+version: "2"
+
+services:
+  mongodb:
+    image: "mongo"
+    ports:
+      - "27017:27017"
+    environment:
+      - VIRTUAL_PORT=27017
+
+  backend:
+    build: ./backend/
+    expose:
+      - 6200
+    ports:
+      - "6200:6200"
+    volumes:
+      - ./backend/src:/app/src
+    environment:
+      - NODE_ENV=development
+      # - VIRTUAL_HOST=api.example.com,www.api.example.com
+      # - VIRTUAL_PORT=6200
+      # - LETSENCRYPT_HOST=api.example.com
+      # - LETSENCRYPT_EMAIL=example@mail.com
+
+    depends_on:
+      - mongodb
+      - frontend
+
+
+  frontend:
+    build: ./frontend/
+    expose:
+      - 3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    environment:
+      - NODE_ENV=development
+      # - VIRTUAL_HOST=example.com,www.example.com
+      # - VIRTUAL_PORT=3000
+      # - LETSENCRYPT_HOST=example.com
+      # - LETSENCRYPT_EMAIL=example@mail.com     
+
+
+  # nginx-proxy:
+  #   image: jwilder/nginx-proxy
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - "/etc/nginx/vhost.d"
+  #     - "/usr/share/nginx/html"
+  #     - "/var/run/docker.sock:/tmp/docker.sock:ro"
+  #     - "/etc/nginx/certs"
+
+  # letsencrypt-nginx-proxy-companion:
+  #   image: jrcs/letsencrypt-nginx-proxy-companion
+  #   volumes:
+  #     - "/var/run/docker.sock:/var/run/docker.sock:ro"
+  #   volumes_from:
+  #     - "nginx-proxy"
