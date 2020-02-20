@@ -1,9 +1,11 @@
 var admin = require('firebase-admin');
 
-var serviceAccount = require("../config/serviceAccountKey.json");
+var serviceAccount = require("../config/config.js").serviceAccount;
+var databaseURL = require("../config/config.js").databaseURL;
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "**************************"
+  databaseURL
 });
 
 const userModel = require('../models/user');

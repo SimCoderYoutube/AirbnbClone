@@ -4,17 +4,7 @@ import StyledFirebaseUi from 'react-firebaseui/StyledFirebaseAuth'
 import 'whatwg-fetch';
 import axios from 'axios'
 
-const firebaseConfig = {
-  apiKey: "**********************************",
-  authDomain: "**********************************",
-  databaseURL: "**********************************",
-  projectId: "**********************************",
-  storageBucket: "**********************************",
-  messagingSenderId: "**********************************",
-  appId: "**********************************",
-  measurementId: "**********************************"
-};
-
+const firebaseConfig = require('../../config/config').firebaseConfig;
 firebase.initializeApp(firebaseConfig)
 
 var uiConfig = {
