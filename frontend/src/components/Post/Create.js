@@ -7,6 +7,7 @@ class Create extends Component {
         super(props);
 
         this.state = {
+            user : null,
             title : '',
             description : '',
             numberOfPeople : 0,
@@ -17,7 +18,21 @@ class Create extends Component {
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
+        
     }
+
+    componentDidMount() {
+        var that = this;
+		firebase.auth().onAuthStateChanged(function(user) {
+			if (user) {
+				that.setState({ user });
+			} else {
+				that.setState({ user: null });
+			}
+		});
+	}
+
 
     handleInputChange(event){
         const target = event.target;
@@ -29,6 +44,7 @@ class Create extends Component {
         });
     }
     handleSubmit(){
+        console.table(this.state.user)
         axios.post('http://127.0.0.1:6200/api/post/create', null,
         {
             params:{

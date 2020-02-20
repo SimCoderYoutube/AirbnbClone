@@ -23,6 +23,8 @@ module.exports = {
       //Place the user info that reached this point in a string into an object
       userJson = JSON.parse(user);
 
+      console.log(userJson)
+      console.log(userJson.stsTokenManager)
       //Check if the user token is valid, this will confirm the user is correctly logged in
       admin.auth().verifyIdToken(userJson.stsTokenManager.accessToken)
         .then(function (decodedToken) {
