@@ -21,3 +21,5 @@ $RECYCLE.BIN/
 .Trashes
 
 server/config/
+backend/src/config/config.js
+frontend/src/components/Post/Create.js
