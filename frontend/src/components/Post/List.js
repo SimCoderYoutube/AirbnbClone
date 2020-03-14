@@ -15,7 +15,6 @@ class List extends Component {
         axios.get('http://127.0.0.1:6200/api/post/list', null)
             .then(res => {
                 let posts = res.data.post_list
-                console.log("lmlmmlm", posts)
                 this.setState({ posts })
             })
             .catch(error => {
@@ -24,20 +23,15 @@ class List extends Component {
     }
 
     render() {
-        console.log('asd', this.state.posts)
-
         let { posts } = this.state;
 
-        console.log(posts)
-
         return (
-
             <>
                 <ul>
-                    {posts.map(currentVideo => {
+                    {posts.map(currentPost => {
                         return (
                             <li>
-                                {currentVideo.title}|{currentVideo.description}|{currentVideo.pricePerNight}
+                                {currentPost.title} | {currentPost.description} | {currentPost.pricePerNight}
                             </li>
                         )
                     })}
