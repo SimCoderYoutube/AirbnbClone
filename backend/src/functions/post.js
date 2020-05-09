@@ -3,13 +3,13 @@ const postModel = require('../models/post');
 const userFunc = require('./user');
 
 module.exports = {
-    createPost: (user, title, description, location, numberOfPeople, pricePerNight) => new Promise((resolve, reject) => {
-        console.log(user)
-        userFunc.verifyAccount(user)//Verify if user is correctly logged in
+    createPost: (user, idToken, title, description, location, numberOfPeople, pricePerNight, imageUrlList) => new Promise((resolve, reject) => {
+        console.log(idToken)
+        userFunc.verifyAccount(user, idToken)//Verify if user is correctly logged in
             .then(result => {
-
+                console.log({result})
                 //Create and save post object
-                const mPost = new postModel({ title, description, location, numberOfPeople, pricePerNight });
+                const mPost = new postModel({ title, description, location, numberOfPeople, pricePerNight, imageUrlList });
                 mPost.save();
 
                 //find user by the id of the result and push the post the posts entry in the user document
@@ -34,6 +34,7 @@ module.exports = {
                     });
             })
             .catch(error => {
+                console.log({error})
                 reject(error)
             });
     }),

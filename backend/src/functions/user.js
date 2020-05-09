@@ -1,17 +1,9 @@
 var admin = require('firebase-admin');
 
-var serviceAccount = require("../config/config.js").serviceAccount;
-var databaseURL = require("../config/config.js").databaseURL;
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL
-});
-
 const userModel = require('../models/user');
 
 module.exports = {
-  verifyAccount: function (user) {
+  verifyAccount: function (user, idToken) {
     return new Promise(function (resolve, reject) {
       if(user === undefined){
         return reject({
@@ -22,11 +14,10 @@ module.exports = {
       }
       //Place the user info that reached this point in a string into an object
       userJson = JSON.parse(user);
+      console.log(idToken)
 
-      console.log(userJson)
-      console.log(userJson.stsTokenManager)
       //Check if the user token is valid, this will confirm the user is correctly logged in
-      admin.auth().verifyIdToken(userJson.stsTokenManager.accessToken)
+      admin.auth().verifyIdToken(idToken)
         .then(function (decodedToken) {
           userModel.findOne({ googleId: userJson.uid }).then(function (user) {
 

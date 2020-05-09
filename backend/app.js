@@ -3,6 +3,16 @@ var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var cors = require('cors');
+var admin = require('firebase-admin');
+
+
+var serviceAccount = require("./config/config.js").serviceAccount;
+var databaseURL = require("./config/config.js").databaseURL;
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL
+});
 
 //server configuration
 var basePath = '/';
@@ -40,3 +50,4 @@ app.use(basePath, routes);
 app.listen(port, () => {
   console.log('Backend running on Port: ',port);
 });
+

@@ -31,6 +31,11 @@ class List extends Component {
                     {posts.map(currentPost => {
                         return (
                             <li>
+                                <img
+                                    className="col-md-2"
+                                    src={currentPost.imageUrlList[0]}
+                                    alt="new"
+                                />
                                 {currentPost.title} | {currentPost.description} | {currentPost.pricePerNight}
                             </li>
                         )

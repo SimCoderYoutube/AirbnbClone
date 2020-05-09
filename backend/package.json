@@ -38,16 +38,17 @@
     "supertest": "^4.0.2"
   },
   "dependencies": {
+    "@google-cloud/storage": "^4.7.0",
     "@sentry/node": "^5.10.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv-flow": "^3.1.0",
-    "firebase": "^7.2.2",
-    "firebase-admin": "^8.6.1",
     "eslint-friendly-formatter": "^4.0.1",
     "eslint-plugin-html": "^5.0.5",
     "express": "^4.17.1",
+    "firebase": "^7.2.2",
+    "firebase-admin": "^8.6.1",
     "mongoose": "^5.9.1",
     "papaparse": "^5.1.0"
   }
