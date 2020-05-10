@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from "react-router-dom";
 import axios from 'axios'
 import firebase from 'firebase'
 
@@ -27,20 +28,28 @@ class List extends Component {
 
         return (
             <>
-                <ul>
-                    {posts.map(currentPost => {
-                        return (
-                            <li>
-                                <img
-                                    className="col-md-2"
-                                    src={currentPost.imageUrlList[0]}
-                                    alt="new"
-                                />
-                                {currentPost.title} | {currentPost.description} | {currentPost.pricePerNight}
-                            </li>
-                        )
-                    })}
-                </ul>
+                <div className="container">
+                    <ul>
+
+                        {posts.map(currentPost => {
+                            console.log(currentPost._id)
+                            return (
+                                <Link to={`/post/${currentPost._id}`} >
+                                    <li>
+                                        <img
+                                            className="col-md-2"
+                                            src={currentPost.imageUrlList[0]}
+                                            alt="new"
+                                        />
+
+                                        {currentPost.title} | {currentPost.description} | {currentPost.pricePerNight}
+                                    </li>
+                                </Link>
+                            )
+                        })}
+                    </ul>
+
+                </div>
             </>
         )
     }

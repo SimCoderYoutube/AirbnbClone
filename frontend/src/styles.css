@@ -2,3 +2,29 @@
   margin-top: 40px;
   margin-bottom: 40px;
 }
+a{
+   text-decoration: none !important;
+}
+.post-header-image{
+  height: 40vh;
+  width: 100vw;
+  object-fit: cover;
+}
+
+
+.AppBar{
+  background-color: white !important;
+}
+.AppBar-title{
+  color: rgb(39, 39, 39);
+}
+.AppBar-Login{
+  background-color: white !important;
+}
+
+
+
+.post-reserve-button{
+  background-color: salmon !important;
+  color: white !important;
+}

@@ -31,7 +31,6 @@ router.route('/api/user/check').post(function (req, res) {
  */
 router.route('/api/post/create').post(function (req, res) {
     const { user, idToken, title, description, location, numberOfPeople, pricePerNight, downloadUrlList } = req.query;
-    console.log(downloadUrlList)
     postFunc.createPost(user, idToken, title, description, location, numberOfPeople, pricePerNight, downloadUrlList)
         .then(result => {
             res.json(result);
@@ -49,7 +48,6 @@ router.route('/api/post/create').post(function (req, res) {
  * It will list all the posts available according to certain params
  */
 router.route('/api/post/list').get(function (req, res) {
-    console.log("asasdasd")
     postFunc.listPost()
         .then(result => {
             res.json(result);
@@ -58,6 +56,26 @@ router.route('/api/post/list').get(function (req, res) {
             res.json(error);
         })
 });
+
+/**
+ * Endpoint responsible for calling the listpost function
+ * and sending back the response from it.
+ * 
+ * It will list all the posts available according to certain params
+ */
+router.route('/api/post/get').get(function (req, res) {
+    const { id } = req.query;
+    console.log(id)
+
+    postFunc.getById(id)
+        .then(result => {
+            res.json(result);
+        })
+        .catch(error => {
+            res.json(error);
+        })
+});
+
 
 
 module.exports = router;

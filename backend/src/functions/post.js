@@ -24,18 +24,11 @@ module.exports = {
                         })
                     })
                     .catch(error => {
-                        console.log(error)
-                        reject({
-                            code: 400,
-                            success: false,
-                            message: 'failed to create a new Post',
-                            error: error,
-                        })
+                        reject(new Error(error))
                     });
             })
             .catch(error => {
-                console.log({error})
-                reject(error)
+                reject(new Error(error))
             });
     }),
 
@@ -50,5 +43,20 @@ module.exports = {
                     post_list: result,
                 })
             })
-    })
+            .catch(error => {
+                reject(new Error(error))
+            })
+    }),
+
+    getById: (id) => new Promise((resolve, reject) => {
+        postModel.findById(id)
+            .then(result => {
+                console.log(result)
+                resolve(result)
+            })
+            .catch(error => {
+                reject(new Error(error))
+            })
+    }),
+
 }
