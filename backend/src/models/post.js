@@ -11,7 +11,8 @@ const postSchema = new schema({
     creator: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
     imageUrlList: [{
         type: String
-    }]
+    }],
+    reservations:[ { type: mongoose.Schema.Types.ObjectId, ref: 'reservation' }],
 })
 
 const post = mongoose.model('post', postSchema)

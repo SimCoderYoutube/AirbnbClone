@@ -5,7 +5,7 @@ const userModel = require('../models/user');
 module.exports = {
   verifyAccount: function (user, idToken) {
     return new Promise(function (resolve, reject) {
-      if(user === undefined){
+      if (user === undefined) {
         return reject({
           code: 401,
           success: false,
@@ -23,14 +23,14 @@ module.exports = {
 
             //Check if user exists
             if (!user) {
-              
-            //Create user and save it to the databse
+
+              //Create user and save it to the databse
               new userModel({
                 name: userJson.displayName,
                 picture: userJson.photoURL,
                 email: userJson.email,
                 googleId: userJson.uid
-              }).save().then(function(error, user){
+              }).save().then(function (error, user) {
                 resolve({
                   code: 200,
                   success: true,
@@ -56,5 +56,15 @@ module.exports = {
           })
         });
     });
-  }
+  },
+  list: () => new Promise((resolve, reject) => {
+    userModel.find()
+      .then(result => {
+        console.log(result)
+        resolve(result)
+      })
+      .catch(error => {
+        reject(new Error(error))
+      })
+  }),
 };

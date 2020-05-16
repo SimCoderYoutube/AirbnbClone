@@ -2,6 +2,7 @@ const router = require('express').Router();
 
 const userFunc = require('../functions/user')
 const postFunc = require('../functions/post')
+const reservationFunc = require('../functions/reservation')
 
 
 /**
@@ -11,6 +12,18 @@ const postFunc = require('../functions/post')
 router.route('/api/user/check').post(function (req, res) {
     const { user, idToken } = req.query;
     userFunc.verifyAccount(user, idToken)
+    .then(function (callback) {
+        res.json(callback);
+    }).catch(error => {
+        res.json(error)
+    });
+});
+
+/**
+    * Endpoint that lists all users
+*/
+router.route('/api/user/list').get(function (req, res) {
+    userFunc.list()
     .then(function (callback) {
         res.json(callback);
     }).catch(error => {
@@ -58,10 +71,12 @@ router.route('/api/post/list').get(function (req, res) {
 });
 
 /**
- * Endpoint responsible for calling the listpost function
+ * Endpoint responsible for calling the getById function
  * and sending back the response from it.
  * 
- * It will list all the posts available according to certain params
+ * It will return the post with the id in the request available according to certain params
+ * 
+ * @param id - post id
  */
 router.route('/api/post/get').get(function (req, res) {
     const { id } = req.query;
@@ -74,6 +89,39 @@ router.route('/api/post/get').get(function (req, res) {
         .catch(error => {
             res.json(error);
         })
+});
+
+
+/**
+ * Endpoint responsible creating a reservation for the user
+ * 
+ * @param id - post id
+ * @param user - userObject
+ * 
+ */
+router.route('/api/reservation/create').post(function (req, res) {
+    const { id, user, idToken, dateStart, dateEnd } = req.query;
+    console.log(id)
+
+    reservationFunc.create(id, user, idToken, dateStart, dateEnd)
+        .then(result => {
+            res.json(result);
+        })
+        .catch(error => {
+            res.json(error);
+        })
+});
+
+/**
+    * Endpoint that lists all reservations
+*/
+router.route('/api/reservation/list').get(function (req, res) {
+    reservationFunc.list()
+    .then(function (callback) {
+        res.json(callback);
+    }).catch(error => {
+        res.json(error)
+    });
 });
 
 

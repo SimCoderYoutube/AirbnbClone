@@ -8,6 +8,7 @@ a{
 .post-header-image{
   height: 40vh;
   width: 100vw;
+  max-width:100%;
   object-fit: cover;
 }
 

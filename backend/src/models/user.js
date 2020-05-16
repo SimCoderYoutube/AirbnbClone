@@ -6,7 +6,8 @@ const userSchema = new schema({
     name : {type: String, unique: false},
     email : {type: String, unique: false},
     googleId : {type: String, unique: true},
-    posts : [{type: mongoose.Schema.Types.ObjectId, ref: 'user'}]
+    posts : [{type: mongoose.Schema.Types.ObjectId, ref: 'user'}],
+    reservations:[ { type: mongoose.Schema.Types.ObjectId, ref: 'reservation' }],
 })
 
 const user = mongoose.model('user', userSchema)

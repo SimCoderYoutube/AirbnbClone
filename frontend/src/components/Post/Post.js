@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import firebase from 'firebase';
 
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
@@ -12,13 +13,15 @@ export class Post extends Component {
         super(props)
         this.state = {
             info: null,
-
+            date: null,
             disabledDays:
                 [
                     new Date(2020, 12, 5),
                     new Date(2020, 4, 12),
                 ]
         }
+
+        this.handleReservation = this.handleReservation.bind(this)
     }
 
     tileDisabled = ({ date }) => {
@@ -29,9 +32,10 @@ export class Post extends Component {
         return !!this.state.disabledDays.find(item => { return item.getTime() == date.getTime() });
     }
 
+    onChange = date => { this.setState({ date }) }
+
     componentDidMount() {
-        const { id } = this.props.match.params
-        console.log(id, "sdasd")
+        const { id } = this.props.match.params;
 
         axios.get('http://127.0.0.1:6200/api/post/get', { params: { id } })
             .then(res => {
@@ -43,13 +47,50 @@ export class Post extends Component {
             })
     }
 
+    handleReservation(event) {
+        const { id } = this.props.match.params;
+
+        if(firebase.auth().currentUser == null){
+            return;
+        }
+
+        firebase.auth().currentUser.getIdToken(true)
+            .then((idToken) => {
+                
+                axios.post('http://127.0.0.1:6200/api/reservation/create', null, 
+                { 
+                    params: { 
+                        id, 
+                        idToken, 
+                        user: firebase.auth().currentUser, 
+                        dateStart: this.state.date[0] , 
+                        dateEnd: this.state.date[1]} 
+                    })
+                    .then(res => {
+                        console.log(res)
+                    })
+                    .catch(error => {
+                        console.table(error);
+                    })
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
+    }
+
     render() {
+        const { info, date } = this.state
 
-
-        const { info } = this.state
-        console.log(info)
-
+        let totalNights = 0, totalCost = 0;
         if (info != null) {
+
+            if(date != null){
+                totalNights = Math.round(Math.abs((date[0] - date[1]) / (24 * 60 * 60 * 1000))) - 1;
+                totalCost = info.pricePerNight * totalNights
+            }
+    
+            console.log("asd", info)
             return (
                 <div>
                     <img
@@ -81,10 +122,10 @@ export class Post extends Component {
                             <div className="col-md-4" >
                                 <Card raised>
                                     <CardContent>
-                                        <h5 className="mt-1 " >{info.pricePerNight}5$ / night</h5>
-                                        <Button className="w-100 mt-5 post-reserve-button ">Reserve</Button>
+                                        <h5 className="mt-1 " >{info.pricePerNight}$ / night</h5>
+                                        <p className="mt-1 " >{totalNights} nights x {info.pricePerNight} $ = {totalCost}</p>
+                                        <Button className="w-100 mt-5 post-reserve-button" onClick={() => this.handleReservation()}>Reserve</Button>
                                     </CardContent>
-
                                 </Card>
                             </div>
                         </div>

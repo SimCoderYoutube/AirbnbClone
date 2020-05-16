@@ -22,4 +22,5 @@ $RECYCLE.BIN/
 
 server/config/
 backend/src/config/config.js
-frontend/src/components/Post/Create.js
+backend/config/config.js
+frontend/src/config/config.js
