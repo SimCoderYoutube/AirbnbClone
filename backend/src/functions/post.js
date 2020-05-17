@@ -7,7 +7,7 @@ module.exports = {
         console.log(idToken)
         userFunc.verifyAccount(user, idToken)//Verify if user is correctly logged in
             .then(result => {
-                console.log({result})
+                console.log({ result })
                 //Create and save post object
                 const mPost = new postModel({ title, description, location, numberOfPeople, pricePerNight, imageUrlList });
                 mPost.save();
@@ -49,14 +49,12 @@ module.exports = {
     }),
 
     getById: (id) => new Promise((resolve, reject) => {
-        postModel.findById(id)
-            .then(result => {
-                console.log(result)
-                resolve(result)
-            })
-            .catch(error => {
-                reject(new Error(error))
-            })
+        postModel.findById(id).
+            populate('reservations').
+            exec(function (err, post) {
+                if (err) reject(new Error(err));
+                resolve(post);
+            });
     }),
 
 }

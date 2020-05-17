@@ -101,14 +101,14 @@ router.route('/api/post/get').get(function (req, res) {
  */
 router.route('/api/reservation/create').post(function (req, res) {
     const { id, user, idToken, dateStart, dateEnd } = req.query;
-    console.log(id)
 
     reservationFunc.create(id, user, idToken, dateStart, dateEnd)
         .then(result => {
             res.json(result);
         })
         .catch(error => {
-            res.json(error);
+            console.log(error)
+            res.json(403, error);
         })
 });
 

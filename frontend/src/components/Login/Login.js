@@ -11,16 +11,6 @@ var uiConfig = {
   callbacks: {
     //After user signs in this function is called
     signInSuccessWithAuthResult: function (authResult, redirectUrl) {
-
-      firebase.auth().currentUser.getIdToken(true).then(function (idtoken) {
-        axios.post('http://127.0.0.1:6200/api/user/check', null, { params: { user: firebase.auth().currentUser, idtoken } })
-          .then(res => {
-            console.log(res)
-          })
-          .catch(error => {
-            console.log(error)
-          })
-      })
       return true;
     }
   },

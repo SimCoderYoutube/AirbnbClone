@@ -21,6 +21,7 @@ module.exports = {
         .then(function (decodedToken) {
           userModel.findOne({ googleId: userJson.uid }).then(function (user) {
 
+            console.log(user)
             //Check if user exists
             if (!user) {
 
@@ -48,6 +49,7 @@ module.exports = {
             }
           })
         }).catch(function (error) {
+          console.log(error)
           reject({
             code: 401,
             success: false,

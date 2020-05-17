@@ -19,7 +19,6 @@ export class Header extends Component {
     firebase.auth().signOut();
   }
   render() {
-    console.log(firebase.auth().currentUser)
     return (
       <div>
         <AppBar className="AppBar" position="static">

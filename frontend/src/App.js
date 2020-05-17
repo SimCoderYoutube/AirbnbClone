@@ -14,12 +14,33 @@ import Login from "./components/Login/Login";
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import firebase from 'firebase';
+import axios from 'axios'
 
 export class App extends Component {
 
   componentDidMount() {
+    let that = this
     firebase.auth().onAuthStateChanged(user => {
-      this.forceUpdate()
+
+      if (user != null) {
+        user.getIdToken(true).then(function (idToken) {
+          axios.post('http://127.0.0.1:6200/api/user/check', null, { params: { user, idToken } })
+            .then(res => {
+              console.log(res)
+              that.forceUpdate()
+            })
+            .catch(error => {
+              that.forceUpdate()
+              console.log(error)
+            })
+        }).catch((error) => {
+          that.forceUpdate()
+          console.log(error)
+        })
+      }
+
+
+
     })
   }
   render() {

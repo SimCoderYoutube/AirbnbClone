@@ -32,7 +32,24 @@ export class Post extends Component {
         return !!this.state.disabledDays.find(item => { return item.getTime() == date.getTime() });
     }
 
-    onChange = date => { this.setState({ date }) }
+    onChange = date => {
+        for (let i = 0; i < this.state.info.reservations.length; i++) {
+            console.log(this.state.info.reservations[i])
+
+            const dateStart = new Date(this.state.info.reservations[i].dateStart);
+            const dateEnd = new Date(this.state.info.reservations[i].dateEnd);
+            dateStart.setDate(dateStart.getDate() - 1);
+            dateEnd.setDate(dateEnd.getDate() - 1);
+
+            console.log(date, dateStart, dateEnd)
+            if (date[0] < dateStart && date[1] > dateEnd) {
+                return false;
+            }
+
+        }
+
+        this.setState({ date })
+    }
 
     componentDidMount() {
         const { id } = this.props.match.params;
@@ -40,7 +57,29 @@ export class Post extends Component {
         axios.get('http://127.0.0.1:6200/api/post/get', { params: { id } })
             .then(res => {
                 console.log(res)
-                this.setState({ info: res.data })
+                let disabledDays = []
+
+                for (let i = 0; i < res.data.reservations.length; i++) {
+
+                    const dateStart = new Date(res.data.reservations[i].dateStart);
+                    const dateEnd = new Date(res.data.reservations[i].dateEnd);
+                    dateStart.setDate(dateStart.getDate() - 1);
+                    dateEnd.setDate(dateEnd.getDate() - 1);
+
+                    let loop = dateStart;
+
+                    while (loop < dateEnd) {
+                        disabledDays.push(loop);
+                        var newDate = loop.setDate(loop.getDate() + 1);
+
+                        loop = new Date(newDate);
+
+                    }
+                }
+
+                console.log({ disabledDays })
+
+                this.setState({ info: res.data, disabledDays })
             })
             .catch(error => {
                 console.table(error);
@@ -50,26 +89,28 @@ export class Post extends Component {
     handleReservation(event) {
         const { id } = this.props.match.params;
 
-        if(firebase.auth().currentUser == null){
+        if (firebase.auth().currentUser == null) {
             return;
         }
 
         firebase.auth().currentUser.getIdToken(true)
             .then((idToken) => {
-                
-                axios.post('http://127.0.0.1:6200/api/reservation/create', null, 
-                { 
-                    params: { 
-                        id, 
-                        idToken, 
-                        user: firebase.auth().currentUser, 
-                        dateStart: this.state.date[0] , 
-                        dateEnd: this.state.date[1]} 
+
+                axios.post('http://127.0.0.1:6200/api/reservation/create', null,
+                    {
+                        params: {
+                            id,
+                            idToken,
+                            user: firebase.auth().currentUser,
+                            dateStart: this.state.date[0],
+                            dateEnd: this.state.date[1]
+                        }
                     })
                     .then(res => {
                         console.log(res)
                     })
                     .catch(error => {
+                        this.setState({ date: null })
                         console.table(error);
                     })
             })
@@ -85,11 +126,11 @@ export class Post extends Component {
         let totalNights = 0, totalCost = 0;
         if (info != null) {
 
-            if(date != null){
+            if (date != null) {
                 totalNights = Math.round(Math.abs((date[0] - date[1]) / (24 * 60 * 60 * 1000))) - 1;
                 totalCost = info.pricePerNight * totalNights
             }
-    
+
             console.log("asd", info)
             return (
                 <div>
